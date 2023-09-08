@@ -38,6 +38,7 @@ export default {
     theme: {
       primary: "#1976D2", // Your desired primary color
       secondary: "#424242", // Your desired secondary color
+      dark: true,
       // Other theme options...
     },
   },

@@ -1,19 +1,21 @@
 <template>
   <v-container>
-    <v-textarea
-      v-model="inputText"
-      label="Input Text"
-      rows="5"
-      outlined
-    ></v-textarea>
+    <v-card class="pa-4">
+      <v-textarea
+        v-model="inputText"
+        rows="5"
+        outlined
+        :label="labelText"
+      ></v-textarea>
 
-    <v-btn @click="translateText" color="primary">Translate</v-btn>
+      <v-btn @click="translateText" color="primary">Translate</v-btn>
 
-    <v-divider></v-divider>
+      <v-divider class="my-4"></v-divider>
 
-    <v-card v-if="translatedText" outlined>
-      <v-card-title>Translated Text</v-card-title>
-      <v-card-text>{{ translatedText }}</v-card-text>
+      <v-card v-if="translatedText" outlined>
+        <v-card-title>Translated Text</v-card-title>
+        <v-card-text>{{ translatedText }}</v-card-text>
+      </v-card>
     </v-card>
   </v-container>
 </template>
@@ -32,6 +34,11 @@ export default {
       translatedText: "",
       errorMessage: "",
     };
+  },
+  computed: {
+    labelText() {
+      return this.inputText ? "" : "Input Text";
+    },
   },
   methods: {
     async translateText() {
