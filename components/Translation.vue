@@ -16,6 +16,9 @@
             @voice-input-active="handleVoiceInputActive"
           />
         </v-col>
+        <v-col cols="12" sm="3">
+          <VoiceOutput :textToSpeak="translatedText" :lang="selectedLanguage" />
+        </v-col>
       </v-row>
       <v-row>
         <v-col cols="12" sm="12">
@@ -42,6 +45,7 @@
 // Import Axios for making HTTP requests
 import axios from "axios";
 import VoiceInput from "@/components/VoiceInput.vue";
+import VoiceOutput from "@/components/VoiceOutput.vue";
 
 const api = axios.create({
   baseURL: "http://localhost:8000", // Update with your FastAPI server's URL
@@ -50,6 +54,7 @@ const api = axios.create({
 export default {
   components: {
     VoiceInput,
+    VoiceOutput,
   },
   data() {
     return {
