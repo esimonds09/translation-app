@@ -2,7 +2,7 @@
   <v-container>
     <v-card class="pa-4">
       <v-row>
-        <v-col cols="12" sm="2">
+        <v-col cols="12" sm="4">
           <v-select
             v-model="selectedLanguage"
             :items="languageOptions"
@@ -10,11 +10,17 @@
             outlined
           ></v-select>
         </v-col>
+        <v-col cols="12" sm="3">
+          <VoiceInput
+            @recognized="handleRecognizedText"
+            @voice-input-active="handleVoiceInputActive"
+          />
+        </v-col>
       </v-row>
       <v-row>
         <v-col cols="12" sm="12">
           <v-textarea
-            v-model="inputText"
+            v-model="activeInputText"
             rows="5"
             outlined
             :label="labelText"
@@ -35,17 +41,24 @@
 <script>
 // Import Axios for making HTTP requests
 import axios from "axios";
+import VoiceInput from "@/components/VoiceInput.vue";
 
 const api = axios.create({
   baseURL: "http://localhost:8000", // Update with your FastAPI server's URL
 });
 
 export default {
+  components: {
+    VoiceInput,
+  },
   data() {
     return {
       inputText: "",
+      recognizedText: "",
+      activeInputText: "",
       selectedLanguage: null,
       translatedText: "",
+      isVoiceInputActive: false,
       errorMessage: "",
       languageOptions: [
         { text: "English", value: "en" },
@@ -57,7 +70,7 @@ export default {
   },
   computed: {
     labelText() {
-      return this.inputText ? "" : "Input Text";
+      return this.activeInputText ? "" : "Input Text";
     },
   },
   methods: {
@@ -69,13 +82,26 @@ export default {
       }
       console.log(this.selectedLanguage);
       const response = await api.post("/translate", {
-        text: this.inputText,
+        text: this.activeInputText,
         target_lang: this.selectedLanguage,
       });
       console.log(response);
       this.translatedText = response.data;
-      console.log(this.translateText);
+      console.log(this.translatedText);
     },
+    handleRecognizedText(text) {
+      // this.recognizedText = text;
+      console.log("Translation.vue Text handled");
+      console.log(text);
+      this.recognizedText = text;
+      this.activeInputText = this.isVoiceInputActive ? text : this.inputText;
+    },
+    handleVoiceInputActive(flag) {
+      this.isVoiceInputActive = true;
+    },
+  },
+  created() {
+    this.$on("voice-input-active", this.handleVoiceInputActive);
   },
 };
 </script>
