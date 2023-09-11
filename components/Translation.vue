@@ -53,7 +53,7 @@ import VoiceInput from "@/components/VoiceInput.vue";
 import VoiceOutput from "@/components/VoiceOutput.vue";
 
 const api = axios.create({
-  baseURL: "http://localhost:8000", // Update with your FastAPI server's URL
+  baseURL: "http://localhost:8000", // Update with FastAPI server's URL
 });
 
 export default {
@@ -85,24 +85,24 @@ export default {
   },
   methods: {
     async translateText() {
-      // const targetLang = "ru"; // Replace with your desired target language code
       if (!this.selectedLanguage) {
         this.errorMessage = "Please select a target language!";
         return;
       }
-      console.log(this.selectedLanguage);
-      const response = await api.post("/translate", {
-        text: this.activeInputText,
-        target_lang: this.selectedLanguage,
-      });
-      console.log(response);
-      this.translatedText = response.data;
-      console.log(this.translatedText);
+
+      try {
+        const response = await api.post("/translate", {
+          text: this.activeInputText,
+          target_lang: this.selectedLanguage,
+        });
+        this.translatedText = response.data;
+      } catch (error) {
+        console.error("Translation Error", error);
+        // Handle the error and display an error msg to the user
+        this.errorMessage = "Translation failed. Please try again.";
+      }
     },
     handleRecognizedText(text) {
-      // this.recognizedText = text;
-      console.log("Translation.vue Text handled");
-      console.log(text);
       this.recognizedText = text;
       this.activeInputText = this.isVoiceInputActive ? text : this.inputText;
     },
