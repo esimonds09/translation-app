@@ -1,7 +1,8 @@
 <template>
   <div>
-    <button @click="startSpeechRecognition">Start Voice Input</button>
-    <!-- <p>{{ recognizedText }}</p> -->
+    <v-btn @click="startSpeechRecognition" color="primary" class="ma-3"
+      >Start Voice Input</v-btn
+    >
   </div>
 </template>
 

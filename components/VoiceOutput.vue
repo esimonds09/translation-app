@@ -1,6 +1,6 @@
 <template>
   <div>
-    <button @click="speakText">Speak Text</button>
+    <v-btn @click="speakText" color="primary" class="ma-3">Speak Text</v-btn>
   </div>
 </template>
 

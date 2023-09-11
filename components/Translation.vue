@@ -16,9 +16,6 @@
             @voice-input-active="handleVoiceInputActive"
           />
         </v-col>
-        <v-col cols="12" sm="3">
-          <VoiceOutput :textToSpeak="translatedText" :lang="selectedLanguage" />
-        </v-col>
       </v-row>
       <v-row>
         <v-col cols="12" sm="12">
@@ -30,13 +27,21 @@
           ></v-textarea>
         </v-col>
       </v-row>
-      <v-btn @click="translateText" color="primary">Translate</v-btn>
+      <v-btn @click="translateText" color="primary" class="ma-3"
+        >Translate</v-btn
+      >
 
       <v-divider class="my-4"></v-divider>
-
+      <v-row>
+        <v-col cols="12" sm="3">
+          <VoiceOutput :textToSpeak="translatedText" :lang="selectedLanguage" />
+        </v-col>
+      </v-row>
       <v-card v-if="translatedText" outlined>
-        <v-card-title>Translated Text</v-card-title>
-        <v-card-text>{{ translatedText }}</v-card-text>
+        <v-row>
+          <v-card-title>Translated Text</v-card-title>
+          <v-card-text>{{ translatedText }}</v-card-text>
+        </v-row>
       </v-card>
     </v-card>
   </v-container>
