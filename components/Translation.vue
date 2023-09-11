@@ -1,5 +1,6 @@
 <template>
   <v-container>
+    <Snackbar :message="errorMessage" color="error" />
     <v-card class="pa-4">
       <v-row>
         <v-col cols="12" sm="4">
@@ -51,6 +52,7 @@
 import axios from "axios";
 import VoiceInput from "@/components/VoiceInput.vue";
 import VoiceOutput from "@/components/VoiceOutput.vue";
+import Snackbar from "@/components/Snackbar.vue";
 
 const api = axios.create({
   baseURL: "http://localhost:8000", // Update with FastAPI server's URL
@@ -60,6 +62,7 @@ export default {
   components: {
     VoiceInput,
     VoiceOutput,
+    Snackbar,
   },
   data() {
     return {
@@ -86,20 +89,29 @@ export default {
   methods: {
     async translateText() {
       if (!this.selectedLanguage) {
+        console.log("No language");
         this.errorMessage = "Please select a target language!";
-        return;
+      } else if (!this.activeInputText.trim()) {
+        console.log("No input");
+        this.errorMessage = "Input text cannot be empty!";
+      } else {
+        // Validation succeeded. Clear error.
+        console.log("no error");
+        this.errorMessage = "";
       }
-
-      try {
-        const response = await api.post("/translate", {
-          text: this.activeInputText,
-          target_lang: this.selectedLanguage,
-        });
-        this.translatedText = response.data;
-      } catch (error) {
-        console.error("Translation Error", error);
-        // Handle the error and display an error msg to the user
-        this.errorMessage = "Translation failed. Please try again.";
+      if (!this.errorMessage) {
+        try {
+          const response = await api.post("/translate", {
+            text: this.activeInputText,
+            target_lang: this.selectedLanguage,
+          });
+          this.translatedText = response.data;
+          this.errorMessage = "";
+        } catch (error) {
+          console.error("Translation Error", error);
+          // Handle the error and display an error msg to the user
+          this.errorMessage = "Translation failed. Please try again.";
+        }
       }
     },
     handleRecognizedText(text) {
