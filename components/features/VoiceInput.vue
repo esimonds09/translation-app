@@ -1,6 +1,6 @@
 <template>
   <div>
-    <CustomBtn @click="startSpeechRecognition" buttonText="Start Voice Input" />
+    <CustomBtn @click="startSpeechRecognition" buttonText="Voice Input" />
   </div>
 </template>
 

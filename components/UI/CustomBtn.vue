@@ -2,7 +2,7 @@
   <v-btn
     :color="color"
     class="ma-2"
-    style="width: 170px"
+    style="width: 150px"
     @click="$emit('click')"
   >
     <slot>{{ buttonText }}</slot>
