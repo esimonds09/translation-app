@@ -1,5 +1,5 @@
 from config import DEEPL_API_KEY
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 import httpx
 
@@ -23,7 +23,12 @@ async def translate_text(request_data: dict):
     # Replace with your DeepL API key
     api_key = DEEPL_API_KEY
 
-    # Make a request to DeepL or your preferred translation service
+    # Validate request data
+    if not text:
+        raise HTTPException(status_code=422, detail="Text is required")
+    if not target_lang:
+        raise HTTPException(status_code=422, detail="Target language is required")
+    # Make a request to DeepL
     try:
         async with httpx.AsyncClient() as client:
             response = await client.post(
@@ -37,12 +42,19 @@ async def translate_text(request_data: dict):
         
         # Handle the response and return the translation
         translation_data = response.json()
+        if "translations" not in translation_data:
+            raise HTTPException(status_code=500, detail="Translation failed")
         translation_text = translation_data["translations"][0]["text"]
+
         # print(translation)
         return translation_text
-    except httpx.HTTPError as http_error:
-        # Handle HTTP errors (e.g., 404, 500)
-        return {"error": "HTTP error occurred"}
-    except (httpx.RequestError, KeyError) as other_error:
-        # Handle other types of errors (e.g., network issues, JSON parsing)
-        return {"error": "An error occurred during translation"}
+    
+    except httpx.HTTPStatusError as http_error:
+        error_response = http_error.response.json()
+        error_message = error_response.get("message", "")
+        
+        # Check if the error message indicates an invalid API key
+        if "invalid_auth_key" in error_message.lower():
+            raise HTTPException(status_code=400, detail="Invalid API key")
+        else:
+            raise HTTPException(status_code=500, detail="Translation service error")
