@@ -1,23 +1,25 @@
-<template>
+<!-- <template>
   <v-container>
     <Snackbar :message="errorMessage" color="error" />
     <v-card class="pa-4">
-      <v-row>
-        <v-col cols="12" sm="4">
-          <v-select
-            v-model="selectedLanguage"
-            :items="languageOptions"
-            label="Translate to:"
-            outlined
-          ></v-select>
-        </v-col>
-        <v-col cols="12" sm="3">
+      <div class="d-flex flex-column flex-md-row">
+        <v-select
+          v-model="selectedLanguage"
+          :items="languageOptions"
+          label="Translate to:"
+          outlined
+        ></v-select>
+        <div class="d-flex flex-row">
           <VoiceInput
             @recognized="handleRecognizedText"
             @voice-input-active="handleVoiceInputActive"
           />
-        </v-col>
-      </v-row>
+          <v-btn @click="translateText" color="primary" class="ma-3"
+            >Translate</v-btn
+          >
+        </div>
+      </div>
+
       <v-row>
         <v-col cols="12" sm="12">
           <v-textarea
@@ -28,9 +30,6 @@
           ></v-textarea>
         </v-col>
       </v-row>
-      <v-btn @click="translateText" color="primary" class="ma-3"
-        >Translate</v-btn
-      >
 
       <v-divider class="my-4"></v-divider>
       <v-row>
@@ -50,9 +49,9 @@
 <script>
 // Import Axios for making HTTP requests
 import axios from "axios";
-import VoiceInput from "@/components/VoiceInput.vue";
-import VoiceOutput from "@/components/VoiceOutput.vue";
-import Snackbar from "@/components/Snackbar.vue";
+import VoiceInput from "@/components/features/VoiceInput.vue";
+import VoiceOutput from "@/components/features/VoiceOutput.vue";
+import Snackbar from "@/components/features/Snackbar.vue";
 
 const api = axios.create({
   baseURL: "http://localhost:8000", // Update with FastAPI server's URL
@@ -126,4 +125,4 @@ export default {
     this.$on("voice-input-active", this.handleVoiceInputActive);
   },
 };
-</script>
+</script> -->

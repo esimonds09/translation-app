@@ -1,13 +1,15 @@
 <template>
   <div>
-    <v-btn @click="startSpeechRecognition" color="primary" class="ma-3"
-      >Start Voice Input</v-btn
-    >
+    <CustomBtn @click="startSpeechRecognition" buttonText="Start Voice Input" />
   </div>
 </template>
 
 <script>
+import CustomBtn from "../UI/CustomBtn.vue";
 export default {
+  components: {
+    CustomBtn,
+  },
   data() {
     return {
       recognizedText: "",

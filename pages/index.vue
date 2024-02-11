@@ -2,27 +2,27 @@
   <v-app>
     <v-main>
       <v-container>
-        <v-row>
-          <v-col cols="12">
-            <h1 class="text-h4">Translation App</h1>
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col cols="12">
-            <Translation />
-          </v-col>
-        </v-row>
+        <div class="mt-10">
+          <h1 class="text-h4">Translator</h1>
+        </div>
+        <div class="mx-auto">
+          <!-- <Translation /> -->
+          <Display />
+        </div>
       </v-container>
     </v-main>
   </v-app>
 </template>
 
 <script>
-import Translation from "~/components/Translation.vue";
+// import Translation from "~/components/Translation.vue";
+import Display from "~/components/Display.vue";
+
 export default {
   name: "IndexPage",
   components: {
-    Translation,
+    // Translation,
+    Display,
   },
 };
 </script>
